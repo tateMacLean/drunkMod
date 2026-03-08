@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "drunkmod",
+  "version": "${version}",
+  "name": "Drunk Mod",
+  "description": "Adds drinkable alcoholic beverages with drunk effects and villager trades.",
+  "authors": ["YourName"],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/drunkmod/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["com.drunkmod.DrunkMod"],
+    "client": ["com.drunkmod.DrunkModClient"]
+  },
+  "mixins": [
+    "drunkmod.mixins.json",
+    {
+      "config": "drunkmod.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=0.15.11",
+    "fabric-api": "*",
+    "minecraft": "~1.21.1"
+  }
+}

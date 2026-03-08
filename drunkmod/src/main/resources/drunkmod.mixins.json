@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "com.drunkmod.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "VillagerEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

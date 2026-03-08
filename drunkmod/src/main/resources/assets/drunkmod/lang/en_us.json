@@ -1,0 +1,12 @@
+{
+  "item.drunkmod.beer": "Beer",
+  "item.drunkmod.mead": "Mead",
+  "item.drunkmod.wine": "Wine",
+  "item.drunkmod.rum": "Rum",
+  "item.drunkmod.whiskey": "Whiskey",
+  "effect.drunkmod.drunk": "Drunk",
+  "effect.drunkmod.drunk.description.0": "Tipsy — slight wobble",
+  "effect.drunkmod.drunk.description.1": "Drunk — noticeable wobble",
+  "effect.drunkmod.drunk.description.2": "Very Drunk — heavy wobble",
+  "effect.drunkmod.drunk.description.3": "Absolutely Wasted"
+}
