@@ -1,4 +1,4 @@
-# 🍺 DrunkMod — Fabric Mod for Minecraft 1.21.1
+# 🍺 DrunkMod — Fabric Mod for Minecraft 1.21.11
 
 A Fabric mod that adds drinkable alcoholic beverages with pufferfish-style visual effects,
 floating golden bubbles, and villager trades. No poison — just wobble!
@@ -9,9 +9,9 @@ floating golden bubbles, and villager trades. No poison — just wobble!
 
 | Tool | Version |
 |------|---------|
-| Minecraft | 1.21.1 |
-| Fabric Loader | ≥ 0.15.11 |
-| Fabric API | 0.102.0+1.21.1 |
+| Minecraft | 1.21.11 |
+| Fabric Loader | ≥ 0.18.1 |
+| Fabric API | 0.141.3+1.21.11 |
 | Java | 21 |
 
 ---
@@ -86,8 +86,6 @@ src/
 │   ├── item/
 │   │   ├── AlcoholicDrinkItem.java  # Base drink item class
 │   │   └── ModItems.java           # Item registry (Beer, Mead, Wine, Rum, Whiskey)
-│   ├── mixin/
-│   │   └── VillagerEntityMixin.java
 │   ├── particle/
 │   │   └── ModParticles.java       # Particle type registry
 │   └── trade/
@@ -96,13 +94,13 @@ src/
 ├── client/java/com/drunkmod/
 │   ├── DrunkModClient.java         # Client entrypoint
 │   ├── mixin/
-│   │   └── GameRendererMixin.java  # Injects drunk nausea wobble into renderer
+│   │   ├── GameRendererMixin.java  # Injects drunk wobble into renderer
+│   │   └── InGameHudMixin.java     # Removes nausea/portal overlays
 │   └── particle/
 │       └── DrunkBubbleParticle.java # Golden bubble particle renderer
 │
 └── main/resources/
     ├── fabric.mod.json
-    ├── drunkmod.mixins.json
     ├── drunkmod.client.mixins.json
     ├── assets/drunkmod/
     │   ├── lang/en_us.json

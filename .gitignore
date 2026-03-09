@@ -1,0 +1,6 @@
+build.gradle
+classpath.txt
+gradle*
+build
+.gradle
+.idea

@@ -59,8 +59,13 @@ public class AlcoholicDrinkItem extends Item {
                 // Stack duration: existing + new, up to 10 minutes (12000 ticks)
                 newDuration = Math.min(existing.getDuration() + drunkDuration, 12000);
                 
-                // Allow amplifier to go much higher for extreme effects
-                newAmplifier = Math.min(existing.getAmplifier() + 1, 10);
+                // Smart Stacking: 
+                // 1. If the new drink is stronger than your current state, jump to that strength + 1.
+                // 2. If the new drink is weaker, just increment the current strength by 1.
+                newAmplifier = Math.max(existing.getAmplifier() + 1, drunkAmplifier);
+                
+                // Cap at 10
+                newAmplifier = Math.min(newAmplifier, 10);
             }
 
             user.addStatusEffect(new StatusEffectInstance(
