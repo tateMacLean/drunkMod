@@ -5,6 +5,8 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.player.PlayerEntity;
 
+import net.minecraft.server.world.ServerWorld;
+
 public class DrunkEffect extends StatusEffect {
 
     public DrunkEffect() {
@@ -12,13 +14,13 @@ public class DrunkEffect extends StatusEffect {
     }
 
     @Override
-    public boolean applyUpdateEffect(LivingEntity entity, int amplifier) {
+    public boolean applyUpdateEffect(ServerWorld world, LivingEntity entity, int amplifier) {
         // The visual effects (nausea/wobble) are handled client-side via the mixin.
         // Here we can add gameplay effects based on amplifier (drunk level).
         if (entity instanceof PlayerEntity player) {
             // At higher drunk levels, occasionally stumble (random velocity nudge)
-            if (amplifier >= 2 && entity.getWorld().random.nextInt(100) == 0) {
-                double angle = entity.getWorld().random.nextDouble() * Math.PI * 2;
+            if (amplifier >= 2 && world.random.nextInt(100) == 0) {
+                double angle = world.random.nextDouble() * Math.PI * 2;
                 entity.addVelocity(Math.cos(angle) * 0.15, 0, Math.sin(angle) * 0.15);
             }
         }

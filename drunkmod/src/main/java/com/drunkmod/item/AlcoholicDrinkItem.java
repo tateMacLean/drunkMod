@@ -9,11 +9,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.ActionResult;
+import net.minecraft.item.consume.UseAction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 
 /**
@@ -28,7 +27,7 @@ public class AlcoholicDrinkItem extends Item {
     private final int drunkAmplifier;
 
     public AlcoholicDrinkItem(Settings settings, int drunkDuration, int drunkAmplifier) {
-        super(settings.maxCount(16));
+        super(settings);
         this.drunkDuration = drunkDuration;
         this.drunkAmplifier = drunkAmplifier;
     }
@@ -44,19 +43,8 @@ public class AlcoholicDrinkItem extends Item {
     }
 
     @Override
-    public SoundEvent getDrinkSound() {
-        return SoundEvents.ENTITY_GENERIC_DRINK;
-    }
-
-    @Override
-    public SoundEvent getEatSound() {
-        return SoundEvents.ENTITY_GENERIC_DRINK;
-    }
-
-    @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        user.setCurrentHand(hand);
-        return TypedActionResult.consume(user.getStackInHand(hand));
+    public ActionResult use(World world, PlayerEntity user, Hand hand) {
+        return net.minecraft.item.ItemUsage.consumeHeldItem(world, user, hand);
     }
 
     @Override
@@ -68,9 +56,11 @@ public class AlcoholicDrinkItem extends Item {
             int newAmplifier = drunkAmplifier;
 
             if (existing != null) {
-                // Stack duration, and increase amplifier if drinking more
-                newDuration = Math.min(existing.getDuration() + drunkDuration, drunkDuration * 4);
-                newAmplifier = Math.min(existing.getAmplifier() + 1, 3); // Max level 4 (amplifier 3)
+                // Stack duration: existing + new, up to a maximum (e.g., 5 minutes)
+                newDuration = Math.min(existing.getDuration() + drunkDuration, 6000);
+                
+                // If drinking more, increase level
+                newAmplifier = Math.min(existing.getAmplifier() + 1, 3);
             }
 
             user.addStatusEffect(new StatusEffectInstance(
@@ -81,6 +71,8 @@ public class AlcoholicDrinkItem extends Item {
                 true,
                 true
             ));
+
+            world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_GENERIC_DRINK, user.getSoundCategory(), 1.0f, 1.0f);
 
             // Spawn bubble particles on the server side
             if (world instanceof ServerWorld serverWorld) {

@@ -1,0 +1,8 @@
+.gradle/
+.idea/
+build/
+classpath.txt
+gradle-8.11*
+gradlew
+.DS_Store
+gradle/

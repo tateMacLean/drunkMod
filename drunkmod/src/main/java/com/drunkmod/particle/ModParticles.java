@@ -23,12 +23,4 @@ public class ModParticles {
         );
         DrunkMod.LOGGER.info("Registered drunk_bubble particle.");
     }
-
-    /**
-     * Called from the client initializer to hook up the visual factory.
-     */
-    public static void registerParticleFactories() {
-        net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry.getInstance()
-            .register(DRUNK_BUBBLE, DrunkBubbleParticle.Factory::new);
-    }
 }

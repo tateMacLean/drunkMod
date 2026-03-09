@@ -32,24 +32,48 @@ public class GameRendererMixin {
 
     @Shadow @Final private MinecraftClient client;
 
+//    @Inject(method = "tick", at = @At("HEAD"))
+//    private void drunkmod$onRenderTick(CallbackInfo ci) {
+//        if (client.player == null) return;
+//
+//        StatusEffectInstance drunkEffect = client.player.getStatusEffect(ModEffects.DRUNK);
+//        if (drunkEffect != null) {
+//            float[] intensityByLevel = { 0.25f, 0.45f, 0.65f, 0.85f };
+//            int amp = Math.max(0, Math.min(drunkEffect.getAmplifier(), intensityByLevel.length - 1));
+//            float targetIntensity = intensityByLevel[amp];
+//
+//            float current = client.player.nauseaIntensity;
+//            if (current < targetIntensity) {
+//                client.player.nauseaIntensity = Math.min(current + 0.01f, targetIntensity);
+//            } else if (current > targetIntensity) {
+//                client.player.nauseaIntensity = Math.max(current - 0.005f, targetIntensity);
+//            }
+//        }
+//    }
+
     @Inject(method = "tick", at = @At("HEAD"))
     private void drunkmod$onRenderTick(CallbackInfo ci) {
         if (client.player == null) return;
 
         StatusEffectInstance drunkEffect = client.player.getStatusEffect(ModEffects.DRUNK);
         if (drunkEffect != null) {
-            float[] intensityByLevel = { 0.15f, 0.32f, 0.55f, 0.75f };
-            int amp = Math.min(drunkEffect.getAmplifier(), intensityByLevel.length - 1);
+            // Stronger wobble values — vanilla nausea tops out around 1.0
+            float[] intensityByLevel = { 0.30f, 0.55f, 0.75f, 1.0f };
+            int amp = Math.max(0, Math.min(drunkEffect.getAmplifier(), intensityByLevel.length - 1));
             float targetIntensity = intensityByLevel[amp];
 
-            // Smoothly approach target intensity
             float current = client.player.nauseaIntensity;
+            float speed = amp >= 2 ? 0.02f : 0.01f; // ramps up faster at high levels
             if (current < targetIntensity) {
-                client.player.nauseaIntensity = Math.min(current + 0.01f, targetIntensity);
+                client.player.nauseaIntensity = Math.min(current + speed, targetIntensity);
             } else if (current > targetIntensity) {
                 client.player.nauseaIntensity = Math.max(current - 0.005f, targetIntensity);
             }
+        } else {
+            // Fade out when effect ends
+            if (client.player.nauseaIntensity > 0) {
+                client.player.nauseaIntensity = Math.max(0, client.player.nauseaIntensity - 0.01f);
+            }
         }
-        // When drunk wears off, vanilla nauseaIntensity decay handles fade-out naturally.
     }
 }

@@ -5,17 +5,15 @@ import com.drunkmod.item.ModItems;
 import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.village.TradeOffer;
+import net.minecraft.village.TradedItem;
 import net.minecraft.village.VillagerProfession;
+
+import java.util.Optional;
 
 /**
  * Registers alcoholic drink trades with villagers.
- *
- * Brewer (replaced by Butcher/Farmer since there's no brewer in vanilla):
- *   - Farmer villagers sell Beer and Mead (early tiers)
- *   - Butcher/Cleric villagers sell Wine, Rum, Whiskey (higher tiers)
- *
- * Trade format: TradeOffer(buy1, buy2, sell, uses, xp, multiplier)
  */
 public class DrunkModTrades {
 
@@ -23,17 +21,19 @@ public class DrunkModTrades {
 
         // ── FARMER sells Beer (Novice, tier 1) ─────────────────────────────
         TradeOfferHelper.registerVillagerOffers(VillagerProfession.FARMER, 1, factories -> {
-            factories.add((entity, random) -> new TradeOffer(
-                new ItemStack(Items.EMERALD, 2),     // cost: 2 emeralds
-                new ItemStack(ModItems.BEER, 3),      // reward: 3 beers
+            factories.add((entity, random, world) -> new TradeOffer(
+                new TradedItem(Items.EMERALD, 2),
+                Optional.empty(),
+                new ItemStack(ModItems.BEER, 3),
                 12, 5, 0.05f
             ));
         });
 
         // ── FARMER sells Mead (Apprentice, tier 2) ─────────────────────────
         TradeOfferHelper.registerVillagerOffers(VillagerProfession.FARMER, 2, factories -> {
-            factories.add((entity, random) -> new TradeOffer(
-                new ItemStack(Items.EMERALD, 3),
+            factories.add((entity, random, world) -> new TradeOffer(
+                new TradedItem(Items.EMERALD, 3),
+                Optional.empty(),
                 new ItemStack(ModItems.MEAD, 2),
                 10, 10, 0.05f
             ));
@@ -41,8 +41,9 @@ public class DrunkModTrades {
 
         // ── BUTCHER sells Wine (Journeyman, tier 3) ────────────────────────
         TradeOfferHelper.registerVillagerOffers(VillagerProfession.BUTCHER, 3, factories -> {
-            factories.add((entity, random) -> new TradeOffer(
-                new ItemStack(Items.EMERALD, 4),
+            factories.add((entity, random, world) -> new TradeOffer(
+                new TradedItem(Items.EMERALD, 4),
+                Optional.empty(),
                 new ItemStack(ModItems.WINE, 2),
                 8, 15, 0.05f
             ));
@@ -50,8 +51,9 @@ public class DrunkModTrades {
 
         // ── CLERIC sells Rum (Expert, tier 4) ──────────────────────────────
         TradeOfferHelper.registerVillagerOffers(VillagerProfession.CLERIC, 4, factories -> {
-            factories.add((entity, random) -> new TradeOffer(
-                new ItemStack(Items.EMERALD, 6),
+            factories.add((entity, random, world) -> new TradeOffer(
+                new TradedItem(Items.EMERALD, 6),
+                Optional.empty(),
                 new ItemStack(ModItems.RUM, 1),
                 6, 20, 0.05f
             ));
@@ -59,8 +61,9 @@ public class DrunkModTrades {
 
         // ── CLERIC sells Whiskey (Master, tier 5) ──────────────────────────
         TradeOfferHelper.registerVillagerOffers(VillagerProfession.CLERIC, 5, factories -> {
-            factories.add((entity, random) -> new TradeOffer(
-                new ItemStack(Items.EMERALD, 10),
+            factories.add((entity, random, world) -> new TradeOffer(
+                new TradedItem(Items.EMERALD, 10),
+                Optional.empty(),
                 new ItemStack(ModItems.WHISKEY, 1),
                 4, 30, 0.05f
             ));

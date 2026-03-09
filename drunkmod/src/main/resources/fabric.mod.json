@@ -14,7 +14,6 @@
     "client": ["com.drunkmod.DrunkModClient"]
   },
   "mixins": [
-    "drunkmod.mixins.json",
     {
       "config": "drunkmod.client.mixins.json",
       "environment": "client"

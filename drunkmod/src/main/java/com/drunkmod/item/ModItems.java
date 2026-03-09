@@ -1,15 +1,15 @@
 package com.drunkmod.item;
 
 import com.drunkmod.DrunkMod;
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ConsumableComponents;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemGroups;
-import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.minecraft.text.Text;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 
 public class ModItems {
@@ -20,36 +20,23 @@ public class ModItems {
     // ─────────────────────────────────────────────
 
     /** Light beer — tipsy, short */
-    public static final AlcoholicDrinkItem BEER = new AlcoholicDrinkItem(
-        new Item.Settings(), 1200, 0   // 60s, level 1
-    );
+    public static final AlcoholicDrinkItem BEER = register("beer", 1200, 0);
 
     /** Mead — medium strength */
-    public static final AlcoholicDrinkItem MEAD = new AlcoholicDrinkItem(
-        new Item.Settings(), 1600, 1   // 80s, level 2
-    );
+    public static final AlcoholicDrinkItem MEAD = register("mead", 1600, 1);
 
     /** Wine — medium-long */
-    public static final AlcoholicDrinkItem WINE = new AlcoholicDrinkItem(
-        new Item.Settings(), 2000, 1   // 100s, level 2
-    );
+    public static final AlcoholicDrinkItem WINE = register("wine", 2000, 1);
 
     /** Rum — strong */
-    public static final AlcoholicDrinkItem RUM = new AlcoholicDrinkItem(
-        new Item.Settings(), 2400, 2   // 120s, level 3
-    );
+    public static final AlcoholicDrinkItem RUM = register("rum", 2400, 2);
 
     /** Whiskey — very strong */
-    public static final AlcoholicDrinkItem WHISKEY = new AlcoholicDrinkItem(
-        new Item.Settings(), 3000, 3   // 150s, level 4 (maximum chaos)
-    );
+    public static final AlcoholicDrinkItem WHISKEY = register("whiskey", 3000, 3);
 
     public static void registerItems() {
-        register("beer",    BEER);
-        register("mead",    MEAD);
-        register("wine",    WINE);
-        register("rum",     RUM);
-        register("whiskey", WHISKEY);
+        // Static fields are initialized when the class is loaded.
+        // We call this from DrunkMod to ensure class loading.
 
         // Add to the Food & Drinks group in creative inventory
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.FOOD_AND_DRINK).register(entries -> {
@@ -63,7 +50,19 @@ public class ModItems {
         DrunkMod.LOGGER.info("Registered all DrunkMod items.");
     }
 
-    private static void register(String name, Item item) {
-        Registry.register(Registries.ITEM, Identifier.of(DrunkMod.MOD_ID, name), item);
+    private static AlcoholicDrinkItem register(String name, int duration, int amplifier) {
+        Identifier id = Identifier.of(DrunkMod.MOD_ID, name);
+        RegistryKey<Item> key = RegistryKey.of(RegistryKeys.ITEM, id);
+        
+        AlcoholicDrinkItem item = new AlcoholicDrinkItem(
+            new Item.Settings()
+                .registryKey(key)
+                .maxCount(16)
+                .component(DataComponentTypes.CONSUMABLE, ConsumableComponents.drink().build()),
+            duration,
+            amplifier
+        );
+        
+        return Registry.register(Registries.ITEM, key, item);
     }
 }

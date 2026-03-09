@@ -5,20 +5,21 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.SimpleParticleType;
+import net.minecraft.util.math.random.Random;
 
 /**
  * A cheerful golden bubble that floats upward and wobbles slightly,
  * appearing around players who have the Drunk effect.
  */
 @Environment(EnvType.CLIENT)
-public class DrunkBubbleParticle extends SpriteBillboardParticle {
+public class DrunkBubbleParticle extends BillboardParticle {
 
     private final SpriteProvider spriteProvider;
 
     protected DrunkBubbleParticle(ClientWorld world, double x, double y, double z,
                                   double velocityX, double velocityY, double velocityZ,
                                   SpriteProvider spriteProvider) {
-        super(world, x, y, z, velocityX, velocityY, velocityZ);
+        super(world, x, y, z, velocityX, velocityY, velocityZ, spriteProvider.getSprite(world.random));
         this.spriteProvider = spriteProvider;
 
         // Golden/amber bubble color
@@ -34,7 +35,7 @@ public class DrunkBubbleParticle extends SpriteBillboardParticle {
         this.scale = 0.12f + random.nextFloat() * 0.1f;
         this.maxAge = 25 + random.nextInt(20); // ~1.25–2.25 seconds
 
-        this.setSpriteForAge(spriteProvider);
+        this.updateSprite(spriteProvider);
     }
 
     @Override
@@ -47,12 +48,17 @@ public class DrunkBubbleParticle extends SpriteBillboardParticle {
         if (this.age > this.maxAge - 8) {
             this.alpha = Math.max(0f, this.alpha - 0.1f);
         }
-        this.setSpriteForAge(spriteProvider);
+        this.updateSprite(spriteProvider);
     }
 
     @Override
-    public ParticleTextureSheet getType() {
-        return ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT;
+    public ParticleTextureSheet textureSheet() {
+        return ParticleTextureSheet.SINGLE_QUADS;
+    }
+
+    @Override
+    protected BillboardParticle.RenderType getRenderType() {
+        return BillboardParticle.RenderType.PARTICLE_ATLAS_TRANSLUCENT;
     }
 
     @Environment(EnvType.CLIENT)
@@ -64,9 +70,10 @@ public class DrunkBubbleParticle extends SpriteBillboardParticle {
         }
 
         @Override
-        public Particle create(SimpleParticleType parameters, ClientWorld world,
-                               double x, double y, double z,
-                               double velocityX, double velocityY, double velocityZ) {
+        public Particle createParticle(SimpleParticleType parameters, ClientWorld world,
+                                       double x, double y, double z,
+                                       double velocityX, double velocityY, double velocityZ,
+                                       Random random) {
             return new DrunkBubbleParticle(world, x, y, z, velocityX, velocityY, velocityZ, spriteProvider);
         }
     }
