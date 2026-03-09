@@ -1,10 +1,9 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    {"item": "minecraft:glass_bottle"},
-    {"item": "minecraft:wheat"},
-    {"item": "minecraft:wheat"},
-    {"item": "minecraft:sugar"}
+    "minecraft:glass_bottle",
+    "minecraft:wheat",
+    "minecraft:water_bucket"
   ],
   "result": {"id": "drunkmod:beer", "count": 2}
 }
