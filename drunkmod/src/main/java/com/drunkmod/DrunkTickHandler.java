@@ -30,17 +30,17 @@ public class DrunkTickHandler {
 
                 int amp = drunk.getAmplifier();
 
-                // Spawn bubbles less frequently at lower amplifiers
+                // Spawn bubbles much less frequently
                 int spawnInterval = switch (amp) {
-                    case 0 -> 15;  // Tipsy:  every 15 ticks
-                    case 1 -> 10;  // Drunk:  every 10 ticks
-                    case 2 -> 6;   // Very drunk: every 6 ticks
-                    default -> 3;  // Wasted: every 3 ticks
+                    case 0 -> 120; // Every 6 seconds
+                    case 1 -> 80;  // Every 4 seconds
+                    case 2 -> 60;  // Every 3 seconds
+                    default -> 40; // Every 2 seconds
                 };
 
                 if (tickCounter % spawnInterval != 0) continue;
 
-                int count = amp + 2; // 2–5 bubbles per spawn event
+                int count = 1; // Only 1 bubble per spawn event
 
                 for (int i = 0; i < count; i++) {
                     double ox = (world.random.nextDouble() - 0.5) * 0.6;

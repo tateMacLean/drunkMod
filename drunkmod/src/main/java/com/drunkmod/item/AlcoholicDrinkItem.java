@@ -56,11 +56,11 @@ public class AlcoholicDrinkItem extends Item {
             int newAmplifier = drunkAmplifier;
 
             if (existing != null) {
-                // Stack duration: existing + new, up to a maximum (e.g., 5 minutes)
-                newDuration = Math.min(existing.getDuration() + drunkDuration, 6000);
+                // Stack duration: existing + new, up to 10 minutes (12000 ticks)
+                newDuration = Math.min(existing.getDuration() + drunkDuration, 12000);
                 
-                // If drinking more, increase level
-                newAmplifier = Math.min(existing.getAmplifier() + 1, 3);
+                // Allow amplifier to go much higher for extreme effects
+                newAmplifier = Math.min(existing.getAmplifier() + 1, 10);
             }
 
             user.addStatusEffect(new StatusEffectInstance(
@@ -74,9 +74,9 @@ public class AlcoholicDrinkItem extends Item {
 
             world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_GENERIC_DRINK, user.getSoundCategory(), 1.0f, 1.0f);
 
-            // Spawn bubble particles on the server side
+            // Spawn fewer bubble particles
             if (world instanceof ServerWorld serverWorld) {
-                for (int i = 0; i < 10; i++) {
+                for (int i = 0; i < 3; i++) {
                     double ox = (world.random.nextDouble() - 0.5) * 0.8;
                     double oy = world.random.nextDouble() * 0.5;
                     double oz = (world.random.nextDouble() - 0.5) * 0.8;

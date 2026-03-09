@@ -3,7 +3,8 @@
   "package": "com.drunkmod.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "GameRendererMixin"
+    "GameRendererMixin",
+    "InGameHudMixin"
   ],
   "injectors": {
     "defaultRequire": 1
