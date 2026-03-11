@@ -62,8 +62,8 @@ public class AlcoholicDrinkItem extends Item {
                 // Smart Stacking: 
                 // 1. If the new drink is stronger than your current state, jump to that strength + 1.
                 // 2. If the new drink is weaker, just increment the current strength by 1.
-                newAmplifier = Math.max(existing.getAmplifier() + 1, drunkAmplifier);
-                
+//                newAmplifier = Math.max(existing.getAmplifier() + 1, drunkAmplifier);
+                newAmplifier = existing.getAmplifier() + drunkAmplifier == 0 ? 1 : drunkAmplifier;
                 // Cap at 10
                 newAmplifier = Math.min(newAmplifier, 10);
             }

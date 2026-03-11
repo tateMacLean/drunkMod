@@ -23,13 +23,13 @@ public class ModItems {
     public static final AlcoholicDrinkItem BEER = register("beer", 1200, 0);
 
     /** Mead — medium strength */
-    public static final AlcoholicDrinkItem MEAD = register("mead", 1600, 1);
+    public static final AlcoholicDrinkItem MEAD = register("mead", 1600, 2);
 
     /** Wine — medium-long */
-    public static final AlcoholicDrinkItem WINE = register("wine", 2000, 1);
+    public static final AlcoholicDrinkItem WINE = register("wine", 2000, 2);
 
     /** Rum — strong */
-    public static final AlcoholicDrinkItem RUM = register("rum", 2400, 2);
+    public static final AlcoholicDrinkItem RUM = register("rum", 2400, 3);
 
     /** Whiskey — very strong */
     public static final AlcoholicDrinkItem WHISKEY = register("whiskey", 3000, 3);
